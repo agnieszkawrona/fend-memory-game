@@ -22,12 +22,36 @@ function shuffle(array) {
 }
 
 //function: display card's symbol
+function showSymbol(card){
+  card.classList.add("open", "show", "disabled");
+}
 
 // function: add the card to a list of open cards
+function flipCard(card, flippedCards){
+  flippedCards.push(card);
+}
 
 //function: lock the cards in the open position if matched
+function compareFlippedCards(card, flippedCards, foundPairs){
+  if (card.innerHTML === flippedCards[0].innerHTML){
+    card.classList.add("match");
+    flippedCards[0].classList.add("match");
+    foundPairs.push(card);
+    foundPairs.push(flippedCards[0]);
+  } else {
+    setTimeout(function() {
+      card.classList.remove("open", "show", "disabled");
+      flippedCards[0].classList.remove("open", "show", "disabled");
+    }, 700);
+  }
+}
 
-//function: remove the cards from the list and hide the cards symbol
+//function: check if the game is finished
+function areWeDone(){
+  if (foundPairs.length === cards.length) {
+    alert("You made it! CONGRATS!");
+  }
+}
 
 //function: increment the move counter
 
@@ -43,11 +67,27 @@ function shuffle(array) {
 
 const cardsContainer = document.querySelector(".deck");
 
+let flippedCards = [];
+let foundPairs = [];
+
 for(let i=0; i<cards.length; i++) {
   const card = document.createElement("li");
   card.classList.add("card");
   card.innerHTML = "<i class='" + cards[i] + "'></i>";
   cardsContainer.appendChild(card);
+
+  card.addEventListener("click", function(){
+    if(flippedCards.length === 1){
+      showSymbol(card);
+      flipCard(this, flippedCards);
+      compareFlippedCards(this, flippedCards, foundPairs);
+      flippedCards = [];
+      areWeDone();
+    } else {
+      showSymbol(card);
+      flipCard(this, flippedCards);
+    }
+  })
 }
 
 
