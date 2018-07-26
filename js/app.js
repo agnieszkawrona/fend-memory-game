@@ -34,6 +34,11 @@ let moves = 0;
 
 const starRating = document.querySelector(".stars");
 
+const timerContainer = document.querySelector(".timer");
+let liveTimer, totalSec = 0;
+timerContainer.innerHTML = totalSec;
+let firstClick = true;
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -80,7 +85,9 @@ function compareFlippedCards(card, flippedCards, foundPairs){
 //function: check if the game is finished; if it is, display a message with a final score
 function areWeDone(){
   let starsResult = "";
+  let showTime = timerContainer.innerHTML;
   if (foundPairs.length === cardsList.length) {
+    stopTimer();
     if (starRating.innerHTML == `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`) {
       starsResult = "***";
     } else if (starRating.innerHTML == `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`) {
@@ -88,7 +95,7 @@ function areWeDone(){
     } else {
       starsResult = "*";
     }
-    if (confirm("You made it! CONGRATS! \n Your score is:  "+starsResult+ "\n Your time:   \n Your number of moves: " + moves)) {
+    if (confirm("You made it! CONGRATS! \n Your score is:  "+starsResult+ "\n Your time: " + showTime + "s\n Your number of moves: " + moves)) {
       cardsContainer.innerHTML = "";
       init();
       foundPairs = [];
@@ -117,6 +124,18 @@ function rateGame(){
   }
 }
 
+//function: timer
+function startTimer() {
+  liveTimer = setInterval(function() {
+    totalSec += 1;
+    timerContainer.innerHTML = totalSec;
+  },1000);
+}
+
+function stopTimer(){
+  clearInterval(liveTimer);
+}
+
 // initialize the game
 function init() {
   const cards = shuffle(cardsList);
@@ -129,6 +148,10 @@ function init() {
     card.innerHTML = "<i class='" + cards[i] + "'></i>";
     cardsContainer.appendChild(card);
     card.addEventListener("click", function(){
+      if(firstClick) {
+        startTimer();
+        firstClick = false;
+      }
       if(flippedCards.length === 1){
         showSymbol(card);
         flipCard(this, flippedCards);
@@ -144,9 +167,13 @@ function init() {
 
 //function: restart Game
 restartButton.addEventListener("click",function() {
+  stopTimer();
+  firstClick = true;
   cardsContainer.innerHTML = "";
   init();
   foundPairs = [];
+  totalSec = 0;
+  timerContainer.innerHTML = totalSec;
 })
 
 init();
