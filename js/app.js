@@ -2,7 +2,7 @@
  * Create a list that holds all of your cards
  */
 
-const cards = ["fa fa-diamond", "fa fa-diamond", "fa fa-cube", "fa fa-cube",
+const cardsList = ["fa fa-diamond", "fa fa-diamond", "fa fa-cube", "fa fa-cube",
 "fa fa-paper-plane-o", "fa fa-paper-plane-o", "fa fa-leaf", "fa fa-leaf",
 "fa fa-anchor", "fa fa-anchor", "fa fa-bolt", "fa fa-bolt", "fa fa-bicycle",
 "fa fa-bicycle", "fa fa-bomb", "fa fa-bomb"];
@@ -66,6 +66,7 @@ function compareFlippedCards(card, flippedCards, foundPairs){
     flippedCards[0].classList.add("match");
     foundPairs.push(card);
     foundPairs.push(flippedCards[0]);
+
   } else {
     setTimeout(function() {
       card.classList.remove("open", "show", "disabled");
@@ -73,12 +74,27 @@ function compareFlippedCards(card, flippedCards, foundPairs){
     }, 700);
   }
   countMoves();
+  areWeDone();
 }
 
 //function: check if the game is finished; if it is, display a message with a final score
 function areWeDone(){
-  if (foundPairs.length === cards.length) {
-    alert("You made it! CONGRATS!");
+  let starsResult = "";
+  if (foundPairs.length === cardsList.length) {
+    if (starRating.innerHTML == `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`) {
+      starsResult = "***";
+    } else if (starRating.innerHTML == `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`) {
+      starsResult = "**";
+    } else {
+      starsResult = "*";
+    }
+    if (confirm("You made it! CONGRATS! \n Your score is:  "+starsResult+ "\n Your time:   \n Your number of moves: " + moves)) {
+      cardsContainer.innerHTML = "";
+      init();
+      foundPairs = [];
+    } else {
+      alert("see ya!");
+    }
   }
 }
 
@@ -103,8 +119,9 @@ function rateGame(){
 
 // initialize the game
 function init() {
+  const cards = shuffle(cardsList);
   moves = 0;
-  movesCounter.innerHTML = moves;
+  movesCounter.innerHTML = 0;
   starRating.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`;
   for(let i=0; i<cards.length; i++) {
     const card = document.createElement("li");
@@ -117,7 +134,6 @@ function init() {
         flipCard(this, flippedCards);
         compareFlippedCards(this, flippedCards, foundPairs);
         flippedCards = [];
-        areWeDone();
       } else {
         showSymbol(card);
         flipCard(this, flippedCards);
