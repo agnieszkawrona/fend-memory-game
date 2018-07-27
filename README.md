@@ -12,3 +12,7 @@ Big thank you to Yahya Elharony for the webinar which was a huge help in this pr
 https://www.youtube.com/watch?v=G8J13lmApkQ
 And his instructions on adding a timer function:
 https://drive.google.com/file/d/1blJv3xK22ozh80RuUC2iA-9_SGQKsJ9E/edit
+
+###### DEPENDENCIES
+- Bootstrap (https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css)
+- Google Fonts (https://fonts.googleapis.com/css?family=Coda)
