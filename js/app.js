@@ -172,6 +172,7 @@ restartButton.addEventListener("click",function() {
   cardsContainer.innerHTML = "";
   init();
   foundPairs = [];
+  flippedCards = [];
   totalSec = 0;
   timerContainer.innerHTML = totalSec;
 })
